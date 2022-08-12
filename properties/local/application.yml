@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    hibernate.ddl-auto: update
+    properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MariaDBDialect
+  datasource:
+    url: jdbc:mariadb://servicedb:3306/nome_app_db
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+    configuration:
+      maximum-pool-size: 30
+
+logging:
+  level:
+    org.springframework.web: DEBUG

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#!/usr/bin/env bash
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+
+JAVA_STAGED_FILES=$(git diff --name-only --cached --diff-filter=ACMR -- '*.java' | sed 's| |\\ |g')
+
+if [[ -n "$JAVA_STAGED_FILES" ]]; then
+
+    make test
+    STATUS=$?
+
+    if [[ "$STATUS" -eq 0 ]]; then
+        echo -e "${GREEN} Unit Tests Suite is OK ${NC}"
+    else
+        echo "${RED} Pay attention! Unit Tests are broken. ${NC}"
+        exit 1
+    fi
+
+else
+    echo -e "No Java staged files"
+    exit 0
+fi

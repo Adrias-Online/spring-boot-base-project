@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  sonarqube:
+    image: sonarqube
+    expose:
+      - 9000
+    ports:
+      - "127.0.0.1:9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    networks:
+      - java_ao-crm-reservations_app_net

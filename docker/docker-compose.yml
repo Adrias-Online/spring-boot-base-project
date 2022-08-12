@@ -1,0 +1,47 @@
+version: '3.7'
+
+volumes:
+  maven-repo: {}
+  java_nome_app_app_database: {}
+
+networks:
+  java_nome_app_app_net:
+    driver: bridge
+    name: java_nome_app_app_net
+
+services:
+
+  java_nome_app_app:
+    build: java
+    volumes:
+      - ../:/var/app/
+    depends_on:
+      - servicedb
+    networks:
+      - java_nome_app_app_net
+
+  servicedb:
+    image: mariadb:10.5.1
+    volumes:
+      - java_nome_app_app_database:/var/lib/mysql
+      - ./data/db:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=nome_app_db
+    networks:
+      - java_nome_app_app_net
+
+  nodejs:
+    build: nodejs
+    working_dir: /var/www/app
+    volumes:
+      - ../:/var/www/app
+    networks:
+      - java_nome_app_app_net
+        
+  wiremock:
+    image: rodolpheche/wiremock
+    volumes:
+      - ./wiremock:/home/wiremock
+    networks:
+      - java_nome_app_app_net
